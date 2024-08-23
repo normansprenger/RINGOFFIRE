@@ -13,7 +13,7 @@ import { GameInfoComponent } from '../game-info/game-info.component';
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, PlayerComponent, MatButtonModule, MatIconModule,MatInputModule, MatDialogModule, GameInfoComponent],
+  imports: [CommonModule, PlayerComponent, MatButtonModule, MatIconModule, MatInputModule, MatDialogModule, GameInfoComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
@@ -39,7 +39,8 @@ export class GameComponent implements OnInit {
       console.log(this.currentCard);
       this.pickCardAnimation = true;
 
-      console.log(this.game)
+      this.game.currentplayer++;
+      this.game.currentplayer = this.game.currentplayer % this.game.players.length;
       setTimeout(() => {
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
@@ -50,12 +51,11 @@ export class GameComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
     dialogRef.afterClosed().subscribe(name => {
-      this.game.players.push(name);
-
+      if (name?.length > 0) {
+        this.game.players.push(name);
+      }
     });
   }
-
-
 }
 
 
